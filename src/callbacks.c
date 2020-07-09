@@ -38,11 +38,32 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
     } else {
         g_message("Authentication failed");
         if (strlen(app->config->invalid_password_text) > 0) {
-           if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
+						++failures;
+
+            if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
                 gtk_widget_show(APP_FEEDBACK_LABEL(app));
             }
+
+						char feedback = "B"; // Frowning face
+						switch (failures) {
+								case 1:
+										break;
+								case 2:
+										feedback = "H";
+										break;
+								case 3:
+										feedback = "F";
+										break;
+								case 4:
+										feedback = "G";
+										break;
+								default:
+										feedback = "E";
+										break;
+						}
+
             gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)),
-                               app->config->invalid_password_text);
+                               feedback);
         }
         begin_authentication_as_default_user(app);
     }

@@ -21,6 +21,8 @@ App *initialize_app(int argc, char **argv)
         g_error("Could not allocate memory for App");
     }
 
+		int failures = 0;
+
     app->config = initialize_config();
     app->greeter = lightdm_greeter_new();
     app->ui = initialize_ui(app->config);

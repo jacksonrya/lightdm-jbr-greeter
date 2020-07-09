@@ -1,4 +1,4 @@
-/* lightdm-mini-greeter - A minimal GTK LightDM Greeter */
+/* lightdm-jbr-greeter - A JBR-custom minimal GTK LightDM Greeter */
 #include <sys/mman.h>
 
 #include <gtk/gtk.h>

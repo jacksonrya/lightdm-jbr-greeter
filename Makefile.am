@@ -9,7 +9,7 @@ AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
 			-Wswitch-enum -Wconversion -Wunreachable-code -Wformat=2  \
 			-Winit-self                                               \
 			-ftrapv -fverbose-asm \
-			-DCONFIG_FILE=\""$(sysconfdir)/lightdm/lightdm-mini-greeter.conf"\"
+			-DCONFIG_FILE=\""$(sysconfdir)/lightdm/lightdm-jbr-greeter.conf"\"
 
 
 # Packaging
@@ -31,17 +31,17 @@ MAINTAINERCLEANFILES = \
 
 # Data Files
 xgreetersdir = $(datadir)/xgreeters
-dist_xgreeters_DATA = data/lightdm-mini-greeter.desktop
+dist_xgreeters_DATA = data/lightdm-jbr-greeter.desktop
 
 configdir = $(sysconfdir)/lightdm
-dist_config_DATA = data/lightdm-mini-greeter.conf
+dist_config_DATA = data/lightdm-jbr-greeter.conf
 
 
 # Greeter Executable
 greeterdir = $(bindir)
-greeter_PROGRAMS = lightdm-mini-greeter
+greeter_PROGRAMS = lightdm-jbr-greeter
 
-lightdm_mini_greeter_SOURCES = \
+lightdm_jbr_greeter_SOURCES = \
 							src/main.c \
 							src/app.c \
 							src/callbacks.c \
@@ -50,10 +50,10 @@ lightdm_mini_greeter_SOURCES = \
 							src/ui.c \
 							src/utils.c
 
-lightdm_mini_greeter_CFLAGS = \
+lightdm_jbr_greeter_CFLAGS = \
 							$(AM_CFLAGS) \
 							$(GTK_CFLAGS) \
 							$(LIGHTDM_CFLAGS)
-lightdm_mini_greeter_LDADD = \
+lightdm_jbr_greeter_LDADD = \
 							$(GTK_LIBS) \
 							$(LIGHTDM_LIBS)

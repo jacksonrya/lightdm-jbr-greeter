@@ -22,8 +22,9 @@ static void move_mouse_to_background_window(void);
 static void setup_main_window(Config *config, UI *ui);
 static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
+static void create_and_attach_feedback(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
-static void create_and_attach_feedback_label(UI *ui);
+/* static void create_and_attach_feedback_label(UI *ui); */
 static void attach_config_colors_to_screen(Config *config);
 
 
@@ -36,8 +37,9 @@ UI *initialize_ui(Config *config)
     move_mouse_to_background_window();
     setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
+    create_and_attach_feedback(ui);
     create_and_attach_password_field(config, ui);
-    create_and_attach_feedback_label(ui);
+    /* create_and_attach_feedback_label(ui); */
     attach_config_colors_to_screen(config);
 
     return ui;
@@ -213,7 +215,7 @@ static void create_and_attach_layout_container(UI *ui)
 }
 
 
-/* Add a label & entry field for the user's password.
+/* Add a hidden entry field for the user's password.
  *
  * If the `show_password_label` member of `config` is FALSE,
  * `ui->password_label` is left as NULL.
@@ -230,37 +232,23 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     gtk_entry_set_width_chars(GTK_ENTRY(ui->password_input),
                               config->password_input_width);
     gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
-    gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
-
-    if (config->show_password_label) {
-        ui->password_label = gtk_label_new(config->password_label_text);
-        gtk_label_set_justify(GTK_LABEL(ui->password_label), GTK_JUSTIFY_RIGHT);
-        gtk_grid_attach_next_to(ui->layout_container, ui->password_label,
-                                ui->password_input, GTK_POS_LEFT, 1, 1);
-    }
+    gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 0, 0);
+		gtk_widget_hide(GTK_WIDGET(ui->password_input);
 }
 
 
-/* Add a label for feedback to the user */
-static void create_and_attach_feedback_label(UI *ui)
+/* Add a label for feedback to the user.
+ * The label is a smiling face that transforms from smiling to crying to laughing 
+ * that progresses with each failed password attempt.*/
+static void create_and_attach_feedback(UI *ui)
 {
-    ui->feedback_label = gtk_label_new("");
+    ui->feedback_label = gtk_label_new("A");
     gtk_label_set_justify(GTK_LABEL(ui->feedback_label), GTK_JUSTIFY_CENTER);
-    gtk_widget_set_no_show_all(ui->feedback_label, TRUE);
+    gtk_widget_set_no_show_all(ui->feedback_label, FALSE );
     gtk_widget_set_name(GTK_WIDGET(ui->feedback_label), "error");
+		gtk_widget_set_visible(GTK_WIDGET(ui->feedback_label, TRUE);
 
-    GtkWidget *attachment_point;
-    gint width;
-    if (ui->password_label == NULL) {
-        attachment_point = ui->password_input;
-        width = 1;
-    } else {
-        attachment_point = ui->password_label;
-        width = 2;
-    }
-
-    gtk_grid_attach_next_to(ui->layout_container, ui->feedback_label,
-                            attachment_point, GTK_POS_BOTTOM, width, 1);
+    gtk_grid_attach(ui->layout_container, ui->feedback_label, 0, 0, 1, 1);
 }
 
 /* Attach a style provider to the screen, using color options from config */
